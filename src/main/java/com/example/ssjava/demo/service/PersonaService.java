@@ -1,13 +1,13 @@
 package com.example.ssjava.demo.service;
 
-import com.example.ssjava.demo.entity.PersonaEntity;
+import com.example.ssjava.demo.entity.User;
 
 import java.util.List;
 
 public interface PersonaService {
-    List<PersonaEntity> getAllPerson();
-    PersonaEntity getPersonById(Integer idPerson);
-    PersonaEntity createPerson(PersonaEntity persona);
-    PersonaEntity updatePerson(PersonaEntity persona);
+    List<User> getAllPerson();
+    User getPersonById(Integer idPerson);
+    User createPerson(User persona);
+    User updatePerson(User persona);
 
 }
