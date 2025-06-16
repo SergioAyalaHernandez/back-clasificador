@@ -31,7 +31,7 @@ public class AuthController {
             String jwt = this.jwtUtil.create(dto.getEmail());
             User user = personaRepository.findByEmail(dto.getEmail())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            AuthResponseDto responseDto = new AuthResponseDto(jwt, dto.getEmail(), user.getIdPersona(), user.getTipoUsuario());
+            AuthResponseDto responseDto = new AuthResponseDto(jwt, dto.getEmail(), user.getIdPersona(), user.getTipoUsuario().getNombre());
             return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwt).body(responseDto);
         } catch (AuthenticationException e) {
             AuthResponseDto errorResponse = new AuthResponseDto("No autorizado", dto.getEmail(), 0,"sin rol");

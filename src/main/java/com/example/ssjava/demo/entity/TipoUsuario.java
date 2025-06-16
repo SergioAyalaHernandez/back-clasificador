@@ -1,5 +1,6 @@
 package com.example.ssjava.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,18 +13,19 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "areas")
-public class Area {
+@Table(name = "tipos_usuario")
+public class TipoUsuario {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(nullable = false, unique = true, length = 100)
+  @Column(nullable = false, unique = true, length = 50)
   private String nombre;
 
   @Column(length = 255)
   private String descripcion;
 
-  @ManyToMany(mappedBy = "areas")
+  @OneToMany(mappedBy = "tipoUsuario")
+  @JsonIgnore
   private Set<User> usuarios = new HashSet<>();
 }

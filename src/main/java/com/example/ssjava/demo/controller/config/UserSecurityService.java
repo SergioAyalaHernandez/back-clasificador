@@ -21,11 +21,10 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User persona = personaRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("No existe ese correo"));
-        System.out.println(persona);
         return org.springframework.security.core.userdetails.User.builder()
                 .username(persona.getEmail())
-                .password(persona.getPassword()) // La contraseña ya debe estar encriptada en la base de datos
-                .roles(persona.getTipoUsuario())
+                .password(persona.getPassword())
+                .roles(persona.getTipoUsuario().getDescripcion())
                 .accountLocked(false)
                 .disabled(false)
                 .build();

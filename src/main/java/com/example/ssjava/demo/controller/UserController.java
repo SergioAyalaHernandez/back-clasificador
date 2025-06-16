@@ -1,7 +1,8 @@
 package com.example.ssjava.demo.controller;
 
+import com.example.ssjava.demo.dto.UserCreateDTO;
 import com.example.ssjava.demo.entity.User;
-import com.example.ssjava.demo.service.PersonaService;
+import com.example.ssjava.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
 
-  private PersonaService personaService;
+  private UserService personaService;
 
   @GetMapping
   public ResponseEntity<List<User>> getAllPersonas() {
@@ -32,7 +33,7 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<User> createPersona(@RequestBody User persona) {
+  public ResponseEntity<User> createPersona(@RequestBody UserCreateDTO persona) {
     User createdPersona = personaService.createPerson(persona);
     return ResponseEntity.ok(createdPersona);
   }
