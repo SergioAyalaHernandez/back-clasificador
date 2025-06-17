@@ -22,39 +22,9 @@ public class DocumentoServiceImpl implements DocumentoService {
     private final DocumentoRepository documentoRepository;
 
     @Override
-    public Documento guardarDocumento(MultipartFile file, Integer idTipologia) throws Exception {
-        Documento documento = new Documento();
-        documento.setDato(file.getBytes());
-
-        documento.setNombreDocumento(file.getOriginalFilename());
-
-        if (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".docx")) {
-            documento.setContenidoDocumento(extraerTextoDocx(file.getInputStream()));
-        } else if (file.getOriginalFilename().endsWith(".pdf")) {
-            documento.setContenidoDocumento(extraerTextoPdf(file.getInputStream()));
-        } else {
-            throw new IllegalArgumentException("Formato de archivo no soportado. Solo se aceptan .docx y .pdf.");
-        }
-
+    public Documento guardarDocumento(Documento documento) {
         return documentoRepository.save(documento);
     }
 
-    private String extraerTextoDocx(InputStream inputStream) throws Exception {
-        XWPFDocument document = new XWPFDocument(inputStream);
-        StringBuilder text = new StringBuilder();
-
-        document.getParagraphs().forEach(paragraph -> text.append(paragraph.getText()).append("\n"));
-        document.close();
-
-        return text.toString();
-    }
-
-    private String extraerTextoPdf(InputStream inputStream) throws Exception {
-        PDDocument pdfDocument = PDDocument.load(inputStream);
-        PDFTextStripper pdfStripper = new PDFTextStripper();
-        String text = pdfStripper.getText(pdfDocument);
-        pdfDocument.close();
-        return text;
-    }
 }
 

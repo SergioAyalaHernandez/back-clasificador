@@ -1,5 +1,6 @@
 package com.example.ssjava.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,4 +45,8 @@ public class Ticket {
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "ticket_id")
   private List<Message> messages = new ArrayList<>();
+
+  @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private List<Documento> documentos = new ArrayList<>();
 }

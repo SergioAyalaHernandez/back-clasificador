@@ -4,5 +4,5 @@ import com.example.ssjava.demo.entity.Documento;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DocumentoService {
-    Documento guardarDocumento(MultipartFile file, Integer idTipologia) throws Exception;
+    Documento guardarDocumento(Documento documento);
 }

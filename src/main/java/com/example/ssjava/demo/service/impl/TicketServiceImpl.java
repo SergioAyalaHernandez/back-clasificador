@@ -3,11 +3,13 @@ package com.example.ssjava.demo.service.impl;
 import com.example.ssjava.demo.dto.MessageDTO;
 import com.example.ssjava.demo.dto.TicketDTO;
 import com.example.ssjava.demo.entity.Categoria;
+import com.example.ssjava.demo.entity.Documento;
 import com.example.ssjava.demo.entity.Message;
 import com.example.ssjava.demo.entity.Ticket;
 import com.example.ssjava.demo.mapper.TicketMapper;
 import com.example.ssjava.demo.repository.CategoriaRepository;
 import com.example.ssjava.demo.repository.TicketRepository;
+import com.example.ssjava.demo.service.DocumentoService;
 import com.example.ssjava.demo.service.TicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class TicketServiceImpl implements TicketService {
   private final TicketRepository ticketRepository;
   private final CategoriaRepository categoriaRepository;
   private final TicketMapper ticketMapper;
+  private final DocumentoService documentoService;
 
 
   @Override
@@ -45,8 +48,19 @@ public class TicketServiceImpl implements TicketService {
 
     ticket.setCreatedAt(LocalDateTime.now());
     getExpiration(categoria, ticket);
+    Ticket savedTicket = ticketRepository.save(ticket);
 
-    return ticketMapper.toDTO(ticketRepository.save(ticket));
+    if (ticketDTO.getDocumentos() != null && !ticketDTO.getDocumentos().isEmpty()) {
+      ticketDTO.getDocumentos().forEach(documentoDTO -> {
+        Documento documento = new Documento();
+        documento.setNombreDocumento(documentoDTO.getNombreDocumento());
+        documento.setDato(documentoDTO.getDato());
+        documento.setContenidoDocumento(documentoDTO.getContenidoDocumento());
+        documento.setTicket(savedTicket);
+        documentoService.guardarDocumento(documento);
+      });
+    }
+    return ticketMapper.toDTO(savedTicket);
   }
 
   private static void getExpiration(Categoria categoria, Ticket ticket) {

@@ -31,8 +31,9 @@ public class Documento implements Serializable {
     @Column(name = "contenido_documento")
     private String contenidoDocumento;
 
-    @Column(name = "id_tipologia")
-    private Integer idTipologia;
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 
 }
 
